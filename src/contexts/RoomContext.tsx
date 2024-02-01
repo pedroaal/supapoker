@@ -1,7 +1,7 @@
-import { createContext } from "solid-js";
-import { createStore } from "solid-js/store";
+import { createContext } from 'solid-js'
+import { createStore } from 'solid-js/store'
 
-import { IRoom } from "../types/ws";
+import { type IRoom } from '../types/ws'
 
 export const RoomContext = createContext([{
   room: {
@@ -11,14 +11,14 @@ export const RoomContext = createContext([{
     users: []
   },
   userId: undefined,
-  hasRoom: false,
+  hasRoom: false
 }, {
   updateRoom: (newState: IRoom) => { },
-  updateUser: (newUserId: string) => { },
-}]);
+  updateUser: (newUserId: string) => { }
+}])
 
 interface IProps {
-  children: any;
+  children: any
 }
 
 export const RoomProvider = (props: IProps) => {
@@ -30,25 +30,25 @@ export const RoomProvider = (props: IProps) => {
       users: []
     },
     userId: undefined,
-    hasRoom: false,
-  });
+    hasRoom: false
+  })
 
   const room = [
     store,
     {
-      updateRoom(newRoom: IRoom) {
-        setStore('room', () => { return newRoom });
-        setStore('hasRoom', () => { return true });
+      updateRoom (newRoom: IRoom) {
+        setStore('room', () => { return newRoom })
+        setStore('hasRoom', () => { return true })
       },
-      updateUser(newUserId: string) {
-        setStore('userId', () => { return newUserId });
-      },
-    },
-  ];
+      updateUser (newUserId: string) {
+        setStore('userId', () => { return newUserId })
+      }
+    }
+  ]
 
   return (
     <RoomContext.Provider value={room}>
       {props.children}
     </RoomContext.Provider>
-  );
+  )
 }

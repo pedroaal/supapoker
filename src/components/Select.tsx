@@ -1,14 +1,14 @@
-import { Accessor, For, Setter, Show } from "solid-js";
+import { type Accessor, For, type Setter, Show } from 'solid-js'
 
 interface IInputProps {
-  label?: string;
-  onChange: Setter<string>;
-  value: Accessor<string>;
+  label?: string
+  onChange: Setter<string>
+  value: Accessor<string>
   options: any[]
 }
 
 const Input = (props: IInputProps) => {
-  const { label, onChange, value, options } = props;
+  const { label, onChange, value, options } = props
 
   return (
     <label class="form-control w-full max-w-xs">
@@ -23,7 +23,7 @@ const Input = (props: IInputProps) => {
           </For>
         </select>
     </label>
-  );
-};
+  )
+}
 
-export default Input;
+export default Input

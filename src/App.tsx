@@ -1,9 +1,9 @@
-import { Show } from "solid-js";
+import { Show } from 'solid-js'
 
-import { RoomProvider } from "./contexts/RoomContext";
+import { RoomProvider } from './contexts/RoomContext'
 
-import Room from "./pages/Room";
-import Vote from "./pages/Vote";
+import Room from './pages/Room'
+import Vote from './pages/Vote'
 
 const App = () => {
   return (
@@ -14,7 +14,7 @@ const App = () => {
         <Vote />
       </div>
     </RoomProvider>
-  );
-};
+  )
+}
 
-export default App;
+export default App

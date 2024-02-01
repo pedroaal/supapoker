@@ -6,7 +6,9 @@
     "start": "vite",
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "lint": "npx eslint \"src/**/*.{tsx,ts}\"",
+    "lint:fix": "npx eslint \"src/**/*.{tsx,ts}\" --fix"
   },
   "license": "MIT",
   "devDependencies": {
