@@ -1,13 +1,29 @@
 {
     "env": {
         "browser": true,
+        "node": true,
         "es2021": true
     },
-    "extends": "standard-with-typescript",
+    "extends": [
+        "standard-with-typescript",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:solid/typescript",
+        "prettier"
+    ],
+    "plugins": [
+        "@typescript-eslint",
+        "solid"
+    ],
     "parserOptions": {
         "ecmaVersion": "latest",
-        "sourceType": "module"
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
     },
     "rules": {
+        "solid/reactivity": "warn",
+        "solid/no-destructure": "warn",
+        "solid/jsx-no-undef": "error"
     }
 }
