@@ -5,6 +5,7 @@ import { RoomContext } from '../contexts/RoomContext'
 
 import Input from '../components/Input'
 import Select from '../components/Select'
+import { joinGame, startGame } from '../services/game'
 
 const Room = () => {
   const [store, _] = useContext(RoomContext)
@@ -15,12 +16,21 @@ const Room = () => {
   const [roomId, setRoomId] = createSignal('')
 
   const createRoom = () => {
+    startGame({
+      name: roomName(),
+      metric: metric(),
+      user: user()
+    })
     setRoomName('')
     setMetric('')
     setUser('')
   }
 
   const joinRoom = () => {
+    joinGame({
+      name: user(),
+      roomId: roomId()
+    })
     setUser('')
     setRoomId('')
   }
