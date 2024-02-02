@@ -1,8 +1,8 @@
 import { createClient } from '@supabase/supabase-js'
 
-const SUPABASE_HOST = import.meta.env.VITE_SUPABASE_HOST as string
-const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_KEY as string
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string
 
-const SB = createClient(SUPABASE_HOST, SUPABASE_KEY)
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
-export default SB
+export default supabase
