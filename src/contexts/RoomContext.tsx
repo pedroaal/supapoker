@@ -1,53 +1,59 @@
 import { createContext } from 'solid-js'
 import { createStore } from 'solid-js/store'
 
-import { type IRoom } from '../types/ws'
+import { IRoom } from '../services/room'
+import { IUser } from '../services/user'
 
-export const RoomContext = createContext([{
+interface IStoreValues {
+  room: IRoom
+  user: IUser
+  hasRoom: boolean
+}
+interface IStoreMethods {
+  updateRoom: (newRoom: IRoom) => void
+  updateUser: (newUser: IUser) => void
+}
+
+const DEFAULT_STORE: IStoreValues = {
   room: {
-    id: undefined,
-    name: undefined,
-    metric: undefined,
-    users: []
+    id: '',
+    name: '',
+    metric: ''
   },
-  userId: undefined,
+  user: {
+    id: '',
+    name: ''
+  },
   hasRoom: false
-}, {
-  updateRoom: (newState: IRoom) => { },
-  updateUser: (newUserId: string) => { }
-}])
+}
+
+const DEFAULT_METHODS: IStoreMethods = {
+  updateRoom: () => { },
+  updateUser: () => { }
+}
+
+export const RoomContext = createContext<[IStoreValues, IStoreMethods]>([DEFAULT_STORE, DEFAULT_METHODS])
 
 interface IProps {
   children: any
 }
 
 export const RoomProvider = (props: IProps) => {
-  const [store, setStore] = createStore({
-    room: {
-      id: undefined,
-      name: undefined,
-      metric: undefined,
-      users: []
-    },
-    userId: undefined,
-    hasRoom: false
-  })
+  const [store, setStore] = createStore<IStoreValues>(DEFAULT_STORE)
 
-  const room = [
-    store,
-    {
-      updateRoom (newRoom: IRoom) {
-        setStore('room', () => { return newRoom })
-        setStore('hasRoom', () => { return true })
-      },
-      updateUser (newUserId: string) {
-        setStore('userId', () => { return newUserId })
-      }
+  const methods: IStoreMethods =
+  {
+    updateRoom(newRoom: IRoom) {
+      setStore('room', newRoom)
+      setStore('hasRoom', true)
+    },
+    updateUser(newUser: IUser) {
+      setStore('user', newUser)
     }
-  ]
+  }
 
   return (
-    <RoomContext.Provider value={room}>
+    <RoomContext.Provider value={[store, methods]}>
       {props.children}
     </RoomContext.Provider>
   )
