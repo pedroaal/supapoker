@@ -1,4 +1,4 @@
-import { type Accessor, type Setter, Show } from 'solid-js'
+import { type Accessor, type Setter, Show, type Component } from 'solid-js'
 
 interface IInputProps {
   label?: string
@@ -6,23 +6,19 @@ interface IInputProps {
   value: Accessor<string>
 }
 
-const Input = (props: IInputProps) => {
-  const { label, onChange, value } = props
-
-  return (
-    <label class="form-control w-full max-w-xs">
-      <Show when={label}>
-        <div class="label">
-          <span class="label-text">{label}</span>
-        </div>
-      </Show>
-      <input
-        value={value()}
-        onChange={(e) => onChange(e.currentTarget.value)}
-        class="input input-bordered w-full max-w-xs"
-      />
-    </label>
-  )
-}
+const Input: Component<IInputProps> = (props) => (
+  <label class="form-control w-full max-w-xs">
+    <Show when={props.label}>
+      <div class="label">
+        <span class="label-text">{props.label}</span>
+      </div>
+    </Show>
+    <input
+      value={props.value()}
+      onChange={(e) => props.onChange(e.currentTarget.value)}
+      class="input input-bordered w-full max-w-xs"
+    />
+  </label>
+)
 
 export default Input

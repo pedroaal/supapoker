@@ -1,11 +1,12 @@
-export interface IMetric {
-  id: string
-  label: string
-  value: number[]
-}
+import { type IOption } from '../types/core'
 
-export const METRICS: IMetric[] = [{
-  id: 'scrum',
-  label: 'Scrum',
-  value: [1, 2, 3, 5, 8, 13]
-}]
+export const METRICS_OPTIONS: IOption[] = [
+  {
+    value: 'scrum',
+    label: 'Scrum',
+  },
+]
+
+export const METRICS = {
+  scrum: [1, 2, 3, 5, 8, 13],
+}

@@ -1,29 +1,31 @@
-import { type Accessor, For, type Setter, Show } from 'solid-js'
+import { type Accessor, For, type Setter, Show, type Component } from 'solid-js'
 
-interface IInputProps {
+import { type IOption } from '../types/core'
+
+interface ISelectProps {
   label?: string
   onChange: Setter<string>
   value: Accessor<string>
-  options: any[]
+  options: IOption[]
 }
 
-const Input = (props: IInputProps) => {
-  const { label, onChange, value, options } = props
-
-  return (
-    <label class="form-control w-full max-w-xs">
-      <Show when={label}>
-        <div class="label">
-          <span class="label-text">{label}</span>
-        </div>
-      </Show>
-      <select class="select select-bordered w-full max-w-xs" onChange={e => onChange(e.currentTarget.value)} value={value()}>
-          <For each={options}>
-            {(metric) => <option value={metric.id}>{metric.label}</option>}
-          </For>
-        </select>
-    </label>
-  )
-}
+const Input: Component<ISelectProps> = (props) => (
+  <label class="form-control w-full max-w-xs">
+    <Show when={props.label}>
+      <div class="label">
+        <span class="label-text">{props.label}</span>
+      </div>
+    </Show>
+    <select
+      class="select select-bordered w-full max-w-xs"
+      onChange={(e) => props.onChange(e.currentTarget.value)}
+      value={props.value()}
+    >
+      <For each={props.options}>
+        {(metric) => <option value={metric.value}>{metric.label}</option>}
+      </For>
+    </select>
+  </label>
+)
 
 export default Input

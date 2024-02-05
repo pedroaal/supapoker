@@ -11,15 +11,30 @@ export interface IRoom {
   metric: string
 }
 
+export const getRoomQuery = async (roomId: string): Promise<IRoom> => {
+  const { data, error } = await supabase
+    .from('rooms')
+    .select()
+    .eq('id', roomId)
+    .single()
 
-export const getRoomQuery =
-  async (roomId: string) => {
-    const { data } = await supabase.from('rooms').select().eq('id', roomId)
-    return data ? data[0] : undefined
+  if (error !== null) {
+    throw error
   }
 
-export const createRoomMutation =
-  async (body: ICreateRoom) => {
-    const { data } = await supabase.from('rooms').insert(body).select()
-    return data ? data[0] : undefined
+  return data
+}
+
+export const createRoomMutation = async (body: ICreateRoom): Promise<IRoom> => {
+  const { data, error } = await supabase
+    .from('rooms')
+    .insert(body)
+    .select()
+    .single()
+
+  if (error !== null) {
+    throw error
   }
+
+  return data
+}
