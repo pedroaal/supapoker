@@ -1,8 +1,8 @@
 import { type Component, Show, createSignal, useContext } from 'solid-js'
 
 import { METRICS_OPTIONS } from '../constants/game'
-import { RoomContext } from '../contexts/RoomContext'
-import { joinGame, startGame } from '../services/game'
+import { RoomContext } from '../contexts/room.context'
+import { joinGame, startGame } from '../services/game.services'
 
 import Input from '../components/Input'
 import Select from '../components/Select'

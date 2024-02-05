@@ -1,8 +1,8 @@
 import { type JSX, createContext, type Component } from 'solid-js'
 import { createStore } from 'solid-js/store'
 
-import { type IRoom } from '../services/room'
-import { type IUser } from '../services/user'
+import { type IRoom } from '../services/room.services'
+import { type IUser } from '../services/user.services'
 
 interface IStoreValues {
   room: IRoom

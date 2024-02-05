@@ -1,7 +1,7 @@
 import { type Component, createMemo, For, Show, useContext } from 'solid-js'
 
 import { METRICS } from '../constants/game'
-import { RoomContext } from '../contexts/RoomContext'
+import { RoomContext } from '../contexts/room.context'
 
 const Vote: Component = () => {
   const [store, _] = useContext(RoomContext)

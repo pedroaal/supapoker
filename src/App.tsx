@@ -2,7 +2,7 @@ import { type Component } from 'solid-js'
 import { Route, Router } from '@solidjs/router'
 
 import { ROUTES } from './constants/router'
-import { RoomProvider } from './contexts/RoomContext'
+import { RoomProvider } from './contexts/room.context'
 
 import Room from './pages/Room'
 import Vote from './pages/Vote'
