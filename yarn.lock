@@ -705,6 +705,11 @@
   resolved "https://registry.yarnpkg.com/@solid-primitives/utils/-/utils-6.2.2.tgz#01c28bab7b2842b46bd5559716497decc51ad3cd"
   integrity sha512-11ypVbp987XxETeRqY5Y3OmmTpm8/jZqJXRvo6AyqBthzkvvjEdReuUMU2yVb+pwWGxfZpWHZ6EUCcGXUMhfwg==
 
+"@solidjs/router@^0.11.3":
+  version "0.11.3"
+  resolved "https://registry.yarnpkg.com/@solidjs/router/-/router-0.11.3.tgz#cc4584e00ee703bf6e293a137b4b2635d170c9f6"
+  integrity sha512-clSgyvzNnAw5iwnqHFNdzvvgt1eHbg81hu3A7H/qYz0+J5D0XIk7oqaOI7SRWCTnV8Rg9q4K83VV4foCOb+jcw==
+
 "@supabase/functions-js@^2.1.5":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@supabase/functions-js/-/functions-js-2.2.0.tgz#57afd97308a63088e7db381f2b11fcc466336cc1"
