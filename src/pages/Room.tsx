@@ -67,11 +67,15 @@ const Room: Component = () => {
         setRoomStore('room', room)
         setRoomStore('user', user)
         setRoomStore('players', (prev) => [...prev, ...players])
-        addAlert({ id: actionId, type: 'success', message: 'Room created' })
+        addAlert({ id: actionId, type: 'success', message: 'Joined to room' })
         navigate(ROUTES.GAME)
       })
       .catch((error) => {
-        addAlert({ id: actionId, type: 'error', message: 'Room created' })
+        addAlert({
+          id: actionId,
+          type: 'error',
+          message: 'Error joining to room',
+        })
         console.error(error)
       })
       .finally(() => {

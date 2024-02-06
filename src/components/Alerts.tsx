@@ -33,7 +33,7 @@ const Alerts: Component = () => {
 
   return (
     <Show when={alerts().length > 0}>
-      <div class="w-full md:w-1/2 h-screen fixed top-0 right-0 overflow-y-auto z-50">
+      <div class="w-full md:w-1/2 fixed top-0 right-0 overflow-y-auto z-50">
         <div class="flex flex-col gap-4 p-4">
           <For each={alerts()}>
             {(alert) => {

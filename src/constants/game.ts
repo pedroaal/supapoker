@@ -7,7 +7,7 @@ export const METRICS_OPTIONS: IOption[] = [
   },
 ]
 
-export const METRICS = {
+export const METRICS: Record<string, IOption[]> = {
   scrum: [
     { label: '0', value: '0' },
     { label: '1/2', value: '1/2' },

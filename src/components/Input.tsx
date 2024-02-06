@@ -4,6 +4,8 @@ interface IInputProps {
   label?: string
   onChange: Setter<string>
   value: Accessor<string>
+  disabled?: boolean
+  placeholder?: string
 }
 
 const Input: Component<IInputProps> = (props) => (
@@ -17,6 +19,8 @@ const Input: Component<IInputProps> = (props) => (
       value={props.value()}
       onChange={(e) => props.onChange(e.currentTarget.value)}
       class="input input-bordered w-full max-w-xs"
+      disabled={props.disabled}
+      placeholder={props.placeholder}
     />
   </label>
 )
