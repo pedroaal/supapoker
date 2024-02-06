@@ -4,23 +4,37 @@ import {
   For,
   getOwner,
   runWithOwner,
+  Show,
+  createEffect,
 } from 'solid-js'
 import { Icon } from 'solid-heroicons'
-import { check } from 'solid-heroicons/outline'
+import { check, clipboard } from 'solid-heroicons/outline'
 
 import { METRICS } from '../constants/game'
 import { useRoomStore } from '../context/room.context'
+import { createVote, deleteVotes } from '../services/vote.services'
 import { subscribeToGame, subscribeToUsers } from '../services/game.services'
 
+import Input from '../components/Input'
 import { Button } from '../components/Button'
+import { useNavigate } from '@solidjs/router'
+import { ROUTES } from '../constants/router'
 
 const Vote: Component = () => {
-  const { roomStore } = useRoomStore()
+  const navigate = useNavigate()
+
+  const { roomStore, setRoomStore } = useRoomStore()
   const owner = getOwner()
 
-  runWithOwner(owner, () => {
-    subscribeToGame()
-    subscribeToUsers()
+  createEffect(() => {
+    if (roomStore.room?.id === '') {
+      navigate(ROUTES.HOME)
+
+      runWithOwner(owner, () => {
+        subscribeToUsers()
+        subscribeToGame()
+      })
+    }
   })
 
   const options = createMemo(() => {
@@ -28,19 +42,30 @@ const Vote: Component = () => {
       return []
     }
 
-    console.log('🚀 ~ options ~ current:', METRICS[roomStore.room?.metric])
     return METRICS[roomStore.room?.metric] ?? []
   })
 
   const hasVoted = (userId: string): boolean =>
     roomStore.votes.some((vote) => vote.userId === userId)
 
-  const vote = (value: number): void => {
-    console.log('🚀 ~ vote ~ value:', value)
+  const vote = async (value: string): Promise<void> => {
+    createVote({
+      room_id: roomStore.room.id,
+      user_id: roomStore.user.id,
+      vote: value,
+    }).catch((error) => {
+      console.error('Error creating vote', error)
+    })
   }
 
   const clearVotes = (): void => {
-    console.log('clear votes')
+    setRoomStore('votes', () => [])
+    deleteVotes(roomStore.room.id)
+  }
+
+  const copyToClipboard = async (): Promise<void> => {
+    const value = roomStore.room.id
+    await navigator.clipboard.writeText(value.trim())
   }
 
   return (
@@ -91,7 +116,17 @@ const Vote: Component = () => {
             )}
           </For>
         </ul>
-        <Button title="Clear votes" onClick={clearVotes} />
+        <Show when={roomStore.user.owner}>
+          <div class="flex">
+            <Input
+              value={() => roomStore.room.id}
+              onChange={() => null}
+              disabled
+            />
+            <Button title="" onClick={copyToClipboard} icon={clipboard} />
+          </div>
+          <Button title="Clear votes" onClick={clearVotes} />
+        </Show>
       </div>
     </div>
   )
