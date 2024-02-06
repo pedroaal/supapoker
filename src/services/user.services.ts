@@ -1,8 +1,21 @@
 import supabase from '../config/supabase'
 import { type IUserRes, type ICreateUser, type IUser } from '../types/user'
-import { userDto } from './user.dto'
+import { userDto, usersDto } from './user.dto'
 
-export const createUserMutation = async (body: ICreateUser): Promise<IUser> => {
+export const findUsersByRoomId = async (roomId: string): Promise<IUser[]> => {
+  const { data, error } = await supabase
+    .from('users')
+    .select()
+    .eq('room_id', roomId)
+
+  if (error !== null) {
+    throw error
+  }
+
+  return usersDto(data as IUserRes[])
+}
+
+export const createUser = async (body: ICreateUser): Promise<IUser> => {
   const { data, error } = await supabase
     .from('users')
     .insert(body)

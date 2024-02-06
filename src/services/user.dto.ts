@@ -4,3 +4,5 @@ export const userDto = (data: IUserRes): IUser => ({
   id: data.id,
   name: data.name,
 })
+
+export const usersDto = (data: IUserRes[]): IUser[] => data.map(userDto)
