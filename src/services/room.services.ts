@@ -1,15 +1,6 @@
 import supabase from '../config/supabase'
-
-interface ICreateRoom {
-  name: string
-  metric: string
-}
-
-export interface IRoom {
-  id: string
-  name: string
-  metric: string
-}
+import { type IRoomRes, type ICreateRoom, type IRoom } from '../types/room'
+import { roomDto } from './room.dto'
 
 export const getRoomQuery = async (roomId: string): Promise<IRoom> => {
   const { data, error } = await supabase
@@ -19,10 +10,11 @@ export const getRoomQuery = async (roomId: string): Promise<IRoom> => {
     .single()
 
   if (error !== null) {
+    console.error('🚀 ~ getRoomQuery ~ error:', error)
     throw error
   }
 
-  return data
+  return roomDto(data as IRoomRes)
 }
 
 export const createRoomMutation = async (body: ICreateRoom): Promise<IRoom> => {
@@ -33,8 +25,9 @@ export const createRoomMutation = async (body: ICreateRoom): Promise<IRoom> => {
     .single()
 
   if (error !== null) {
+    console.error('🚀 ~ createRoomMutation ~ error:', error)
     throw error
   }
 
-  return data
+  return roomDto(data as IRoomRes)
 }

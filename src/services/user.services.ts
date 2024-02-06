@@ -1,13 +1,6 @@
 import supabase from '../config/supabase'
-
-export interface IUser {
-  id: string
-  name: string
-}
-
-interface ICreateUser {
-  name: string
-}
+import { type IUserRes, type ICreateUser, type IUser } from '../types/user'
+import { userDto } from './user.dto'
 
 export const createUserMutation = async (body: ICreateUser): Promise<IUser> => {
   const { data, error } = await supabase
@@ -20,5 +13,5 @@ export const createUserMutation = async (body: ICreateUser): Promise<IUser> => {
     throw error
   }
 
-  return data
+  return userDto(data as IUserRes)
 }
