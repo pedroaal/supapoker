@@ -1,19 +1,19 @@
 import { type JSX, createContext, type Component, useContext } from 'solid-js'
-import { createStore } from 'solid-js/store'
+import { type SetStoreFunction, createStore } from 'solid-js/store'
 
 import { type IRoom } from '../types/room'
 import { type IUser } from '../types/user'
 
-interface IStoreValues {
+interface IStore {
   room: IRoom
   user: IUser
-  hasRoom: boolean
+  players: IUser[]
+  votes: Array<{ userId: string; vote: string }>
 }
 
 interface IContext {
-  roomStore: IStoreValues
-  updateRoom: (newRoom: IRoom) => void
-  updateUser: (newUser: IUser) => void
+  roomStore: IStore
+  setRoomStore: SetStoreFunction<IStore>
 }
 
 interface IProps {
@@ -23,7 +23,7 @@ interface IProps {
 export const Context = createContext<IContext>()
 
 export const RoomProvider: Component<IProps> = (props) => {
-  const [roomStore, setRoomStore] = createStore<IStoreValues>({
+  const [roomStore, setRoomStore] = createStore<IStore>({
     room: {
       id: '',
       name: '',
@@ -33,23 +33,15 @@ export const RoomProvider: Component<IProps> = (props) => {
       id: '',
       name: '',
     },
-    hasRoom: false,
+    players: [],
+    votes: [],
   })
 
-  const updateRoom = (newRoom: IRoom): void => {
-    setRoomStore('room', newRoom)
-    setRoomStore('hasRoom', true)
-  }
-
-  const updateUser = (newUser: IUser): void => {
-    setRoomStore('user', newUser)
-  }
-
   return (
-    <Context.Provider value={{ roomStore, updateRoom, updateUser }}>
+    <Context.Provider value={{ roomStore, setRoomStore }}>
       {props.children}
     </Context.Provider>
   )
 }
 
-export const useRoom = (): IContext => useContext(Context)!
+export const useRoomStore = (): IContext => useContext(Context)!
