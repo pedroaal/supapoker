@@ -14,7 +14,11 @@ export const startGame = async (body: {
     name: body.name,
     metric: body.metric,
   })
-  const user = await createUser({ name: body.user, room_id: room?.id })
+  const user = await createUser({
+    name: body.user,
+    room_id: room?.id,
+    owner: true,
+  })
   return { room, user }
 }
 
@@ -47,7 +51,7 @@ export const subscribeToUsers = () => {
       (payload) => {
         setRoomStore('players', (prev) => [
           ...prev,
-          { id: payload.new.id, name: payload.new.name },
+          { id: payload.new.id, name: payload.new.name, owner: false },
         ])
       },
     )

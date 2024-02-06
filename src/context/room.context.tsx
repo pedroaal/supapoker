@@ -32,6 +32,7 @@ export const RoomProvider: Component<IProps> = (props) => {
     user: {
       id: '',
       name: '',
+      owner: false,
     },
     players: [],
     votes: [],

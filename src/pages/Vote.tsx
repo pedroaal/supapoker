@@ -5,10 +5,13 @@ import {
   getOwner,
   runWithOwner,
 } from 'solid-js'
+import { Icon } from 'solid-heroicons'
+import { check } from 'solid-heroicons/outline'
 
 import { METRICS } from '../constants/game'
 import { useRoomStore } from '../context/room.context'
 import { subscribeToGame, subscribeToUsers } from '../services/game.services'
+
 import { Button } from '../components/Button'
 
 const Vote: Component = () => {
@@ -21,7 +24,7 @@ const Vote: Component = () => {
   })
 
   const options = createMemo(() => {
-    if (roomStore.room?.id !== '') {
+    if (roomStore.room?.id === '') {
       return []
     }
 
@@ -43,7 +46,10 @@ const Vote: Component = () => {
   return (
     <div class="flex gap-4">
       <div class="w-full md:w-2/3 flex flex-col gap-4">
-        <div class="flex gap-4">
+        <div class="text-center">
+          <h3>{roomStore.room.name}</h3>
+        </div>
+        <div class="flex gap-4 border p-4 card h-32">
           <For each={roomStore.votes}>
             {(vote) => (
               <div class="card h-24 w-16 flex justify-center items-center border">
@@ -69,11 +75,18 @@ const Vote: Component = () => {
         </div>
       </div>
       <div class="w-full md:w-1/3 flex flex-col gap-4">
+        Players
         <ul>
           <For each={roomStore.players}>
             {(player) => (
-              <li>
-                {player.name} {hasVoted(player.id) && <span>(voted)</span>}
+              <li class="flex gap-2">
+                {hasVoted(player.id) && (
+                  <>
+                    <Icon class="w-5 h-5 text-success" path={check} />
+                  </>
+                )}
+                <span>{player.name}</span>
+                {Boolean(player.owner) && <span>(moderator)</span>}
               </li>
             )}
           </For>
