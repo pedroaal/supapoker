@@ -7,7 +7,7 @@ import {
   informationCircle,
 } from 'solid-heroicons/outline'
 
-import { useCore } from '../context/core.context'
+import { useCoreStore } from '../context/core.context'
 import { type IIcon } from '../types/core'
 
 interface IConfig {
@@ -16,7 +16,7 @@ interface IConfig {
 }
 
 const Alerts: Component = () => {
-  const { alerts } = useCore()
+  const { alerts } = useCoreStore()
 
   const getConfig = (type: string): IConfig => {
     switch (type) {

@@ -65,4 +65,4 @@ export const CoreProvider: Component<IProps> = (props) => {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-export const useCore = (): IContext => useContext(Context)!
+export const useCoreStore = (): IContext => useContext(Context)!
