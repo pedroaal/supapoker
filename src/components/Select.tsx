@@ -9,7 +9,7 @@ interface ISelectProps {
   options: IOption[]
 }
 
-const Input: Component<ISelectProps> = (props) => (
+const Select: Component<ISelectProps> = (props) => (
   <label class="form-control w-full max-w-xs">
     <Show when={props.label}>
       <div class="label">
@@ -28,4 +28,4 @@ const Input: Component<ISelectProps> = (props) => (
   </label>
 )
 
-export default Input
+export default Select
