@@ -14,4 +14,5 @@ export interface IVote {
 export interface IGame {
   room: IRoom
   user: IUser
+  players?: IUser[]
 }
