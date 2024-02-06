@@ -2,21 +2,29 @@ import { type Component } from 'solid-js'
 import { Route, Router } from '@solidjs/router'
 
 import { ROUTES } from './constants/router'
-import { RoomProvider } from './contexts/room.context'
+import { RoomProvider } from './context/room.context'
+import { CoreProvider } from './context/core.context'
+
+import Alerts from './components/Alerts'
+import Loader from './components/Loader'
 
 import Room from './pages/Room'
 import Vote from './pages/Vote'
 
 const App: Component = () => (
-  <RoomProvider>
-    <div class="container mx-auto">
-      <header class="text-center">SUPAPOKER</header>
-      <Router>
-        <Route path={ROUTES.HOME} component={Room} />
-        <Route path={ROUTES.GAME} component={Vote} />
-      </Router>
-    </div>
-  </RoomProvider>
+  <CoreProvider>
+    <RoomProvider>
+      <div class="container mx-auto">
+        <header class="text-center">SUPAPOKER</header>
+        <Alerts />
+        <Loader />
+        <Router>
+          <Route path={ROUTES.HOME} component={Room} />
+          <Route path={ROUTES.GAME} component={Vote} />
+        </Router>
+      </div>
+    </RoomProvider>
+  </CoreProvider>
 )
 
 export default App

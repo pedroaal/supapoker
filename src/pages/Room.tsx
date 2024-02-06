@@ -1,14 +1,14 @@
-import { type Component, Show, createSignal, useContext } from 'solid-js'
+import { type Component, Show, createSignal } from 'solid-js'
 
 import { METRICS_OPTIONS } from '../constants/game'
-import { RoomContext } from '../contexts/room.context'
+import { useRoom } from '../context/room.context'
 import { joinGame, startGame } from '../services/game.services'
 
 import Input from '../components/Input'
 import Select from '../components/Select'
 
 const Room: Component = () => {
-  const [store, _] = useContext(RoomContext)
+  const { roomStore, updateRoom, updateUser } = useRoom()
 
   const [roomName, setRoomName] = createSignal('')
   const [metric, setMetric] = createSignal('')
@@ -21,6 +21,13 @@ const Room: Component = () => {
       metric: metric(),
       user: user(),
     })
+      .then(({ room, user }) => {
+        updateRoom(room)
+        updateUser(user)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
     setRoomName('')
     setMetric('')
     setUser('')
@@ -31,12 +38,19 @@ const Room: Component = () => {
       name: user(),
       roomId: roomId(),
     })
+      .then(({ room, user }) => {
+        updateRoom(room)
+        updateUser(user)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
     setUser('')
     setRoomId('')
   }
 
   return (
-    <Show when={!store.hasRoom}>
+    <Show when={!roomStore.hasRoom}>
       <div class="flex flex-col gap-4">
         <Input label="User" value={user} onChange={setUser} />
 
