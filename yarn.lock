@@ -3157,6 +3157,22 @@ solid-devtools@^0.29.3:
     "@solid-devtools/debugger" "^0.23.3"
     "@solid-devtools/shared" "^0.13.1"
 
+solid-heroicons@^3.2.4:
+  version "3.2.4"
+  resolved "https://registry.yarnpkg.com/solid-heroicons/-/solid-heroicons-3.2.4.tgz#908d6c436da48a6fcbbf3ecc08ec005e62057be5"
+  integrity sha512-u6BMdFLvkJnvUGYzdFcWp1wvJ4hb9Y1zd3AbZ9D3bUmmiy9jBzNZX+RcqBCI2EKRvdQwAb1UB9bkESfqfhayDg==
+  dependencies:
+    solid-js "^1.7.6"
+
+solid-js@^1.7.6:
+  version "1.8.14"
+  resolved "https://registry.yarnpkg.com/solid-js/-/solid-js-1.8.14.tgz#979aa8000eedede07e7f5a5773a4714ab3eeb113"
+  integrity sha512-kDfgHBm+ROVLDVuqaXh/jYz0ZVJ29TYfVsKsgDPtNcjoyaPtOvDX2l0tVnthjLdEXr7vDTYeqEYFfMkZakDsOQ==
+  dependencies:
+    csstype "^3.1.0"
+    seroval "^1.0.3"
+    seroval-plugins "^1.0.3"
+
 solid-js@^1.8.11:
   version "1.8.12"
   resolved "https://registry.yarnpkg.com/solid-js/-/solid-js-1.8.12.tgz#12903f076cdbd74e13dd6ab47b1006c3a07f5591"
