@@ -41,7 +41,7 @@ const Alerts: Component = () => {
 
               return (
                 <div class={`alert ${color}`} role="alert">
-                  <Icon path={icon} class={`w-5 h-5`} />
+                  <Icon path={icon} class="w-5 h-5" />
                   <div class="flex flex-col gap-2">
                     <span>{alert.message}</span>
                     <Show when={alert.description}>

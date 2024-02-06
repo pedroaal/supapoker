@@ -1,4 +1,5 @@
 import { type Component, createSignal } from 'solid-js'
+import { useNavigate } from '@solidjs/router'
 
 import { getId } from '../utils/strings'
 import { useCoreStore } from '../context/core.context'
@@ -9,7 +10,6 @@ import { joinGame, startGame } from '../services/game.services'
 import Input from '../components/Input'
 import Select from '../components/Select'
 import { ROUTES } from '../constants/router'
-import { useNavigate } from '@solidjs/router'
 import { Button } from '../components/Button'
 
 const Room: Component = () => {
