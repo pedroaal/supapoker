@@ -3,12 +3,13 @@ import { type SetStoreFunction, createStore } from 'solid-js/store'
 
 import { type IRoom } from '../types/room'
 import { type IUser } from '../types/user'
+import { type IVote } from '../types/vote'
 
 interface IStore {
   room: IRoom
   user: IUser
   players: IUser[]
-  votes: Array<{ userId: string; vote: string }>
+  votes: IVote[]
 }
 
 interface IContext {
