@@ -13,8 +13,8 @@ interface IStore {
 }
 
 interface IContext {
-  roomStore: IStore
-  setRoomStore: SetStoreFunction<IStore>
+  gameStore: IStore
+  setGameStore: SetStoreFunction<IStore>
 }
 
 interface IProps {
@@ -23,8 +23,8 @@ interface IProps {
 
 export const Context = createContext<IContext>()
 
-export const RoomProvider: Component<IProps> = (props) => {
-  const [roomStore, setRoomStore] = createStore<IStore>({
+export const GameProvider: Component<IProps> = (props) => {
+  const [gameStore, setGameStore] = createStore<IStore>({
     room: {
       id: '',
       name: '',
@@ -40,10 +40,10 @@ export const RoomProvider: Component<IProps> = (props) => {
   })
 
   return (
-    <Context.Provider value={{ roomStore, setRoomStore }}>
+    <Context.Provider value={{ gameStore, setGameStore }}>
       {props.children}
     </Context.Provider>
   )
 }
 
-export const useRoomStore = (): IContext => useContext(Context)!
+export const useGameStore = (): IContext => useContext(Context)!

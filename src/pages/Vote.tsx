@@ -13,7 +13,7 @@ import { check, clipboard } from 'solid-heroicons/outline'
 
 import { METRICS } from '../constants/game'
 import { ROUTES } from '../constants/router'
-import { useRoomStore } from '../context/room.context'
+import { useGameStore } from '../context/game.context'
 import { createVote, deleteVotes } from '../services/vote.services'
 import { subscribeToEvents } from '../services/game.services'
 
@@ -23,11 +23,11 @@ import { Button } from '../components/Button'
 const Vote: Component = () => {
   const navigate = useNavigate()
 
-  const { roomStore } = useRoomStore()
+  const { gameStore } = useGameStore()
   const owner = getOwner()
 
   createEffect(() => {
-    if (roomStore.room?.id === '') {
+    if (gameStore.room?.id === '') {
       navigate(ROUTES.HOME)
     }
   })
@@ -36,15 +36,15 @@ const Vote: Component = () => {
     subscribeToEvents()
   })
 
-  const options = createMemo(() => METRICS[roomStore.room?.metric] ?? [])
+  const options = createMemo(() => METRICS[gameStore.room?.metric] ?? [])
 
   const hasVoted = (userId: string): boolean =>
-    roomStore.votes.some((vote) => vote.userId === userId)
+    gameStore.votes.some((vote) => vote.userId === userId)
 
   const vote = (value: string): void => {
     createVote({
-      room_id: roomStore.room.id,
-      user_id: roomStore.user.id,
+      room_id: gameStore.room.id,
+      user_id: gameStore.user.id,
       vote: value,
     }).catch((error) => {
       console.error('Error creating vote', error)
@@ -52,13 +52,13 @@ const Vote: Component = () => {
   }
 
   const clearVotes = (): void => {
-    deleteVotes(roomStore.room.id).catch((error) => {
+    deleteVotes(gameStore.room.id).catch((error) => {
       console.error('Error deleting votes', error)
     })
   }
 
   const copyToClipboard = async (): Promise<void> => {
-    const value = roomStore.room.id
+    const value = gameStore.room.id
     await navigator.clipboard.writeText(value.trim())
   }
 
@@ -66,14 +66,14 @@ const Vote: Component = () => {
     <div class="flex gap-4">
       <div class="w-full md:w-2/3 flex flex-col gap-4">
         <div class="text-center">
-          <h3>{roomStore.room.name}</h3>
+          <h3>{gameStore.room.name}</h3>
         </div>
         <div class="flex gap-4 border p-4 h-32 rounded-lg">
-          <For each={roomStore.votes}>
+          <For each={gameStore.votes}>
             {(vote) => (
               <div class="h-24 w-16 flex justify-center items-center border border-accent rounded-lg">
                 <Show
-                  when={roomStore.votes.length === roomStore.players.length}
+                  when={gameStore.votes.length === gameStore.players.length}
                   fallback={<div class="size-full rounded-lg bg-accent" />}
                 >
                   <span class="text-accent">{vote.vote}</span>
@@ -90,7 +90,7 @@ const Vote: Component = () => {
                 onClick={() => {
                   vote(option.value)
                 }}
-                disabled={hasVoted(roomStore.user.id)}
+                disabled={hasVoted(gameStore.user.id)}
               >
                 {option.label}
               </button>
@@ -101,7 +101,7 @@ const Vote: Component = () => {
       <div class="w-full md:w-1/3 flex flex-col gap-4">
         Players
         <ul>
-          <For each={roomStore.players}>
+          <For each={gameStore.players}>
             {(player) => (
               <li class="flex gap-2">
                 {hasVoted(player.id) && (
@@ -115,10 +115,10 @@ const Vote: Component = () => {
             )}
           </For>
         </ul>
-        <Show when={roomStore.user.owner}>
+        <Show when={gameStore.user.owner}>
           <div class="join">
             <Input
-              value={() => roomStore.room.id}
+              value={() => gameStore.room.id}
               onChange={() => null}
               disabled
             />

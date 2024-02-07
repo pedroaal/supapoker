@@ -3,7 +3,7 @@ import supabase from '../config/supabase'
 import { createUser, findUsersByRoomId } from './user.services'
 import { createRoom, findRoomById } from './room.services'
 import { type IGame } from '../types/game'
-import { useRoomStore } from '../context/room.context'
+import { useGameStore } from '../context/game.context'
 import { voteDto } from './vote.dto'
 import { userDto } from './user.dto'
 
@@ -38,7 +38,7 @@ export const joinGame = async (body: {
 }
 
 export const subscribeToEvents = () => {
-  const { roomStore, setRoomStore } = useRoomStore()
+  const { gameStore, setGameStore } = useGameStore()
 
   supabase
     .channel('custom-filter-channel')
@@ -48,10 +48,10 @@ export const subscribeToEvents = () => {
         event: 'INSERT',
         schema: 'public',
         table: 'users',
-        filter: `room_id=eq.${roomStore.room?.id}`,
+        filter: `room_id=eq.${gameStore.room?.id}`,
       },
       (payload) => {
-        setRoomStore('players', (prev) => [...prev, userDto(payload.new)])
+        setGameStore('players', (prev) => [...prev, userDto(payload.new)])
       },
     )
     .on(
@@ -60,10 +60,10 @@ export const subscribeToEvents = () => {
         event: 'INSERT',
         schema: 'public',
         table: 'votes',
-        filter: `room_id=eq.${roomStore.room?.id}`,
+        filter: `room_id=eq.${gameStore.room?.id}`,
       },
       (payload) => {
-        setRoomStore('votes', (prev) => [...prev, voteDto(payload.new)])
+        setGameStore('votes', (prev) => [...prev, voteDto(payload.new)])
       },
     )
     .on(
@@ -72,10 +72,10 @@ export const subscribeToEvents = () => {
         event: 'DELETE',
         schema: 'public',
         table: 'votes',
-        filter: `room_id=eq.${roomStore.room?.id}`,
+        filter: `room_id=eq.${gameStore.room?.id}`,
       },
       (payload) => {
-        setRoomStore('votes', (prev) =>
+        setGameStore('votes', (prev) =>
           prev.filter((vote) => vote.id !== payload.old.id),
         )
       },

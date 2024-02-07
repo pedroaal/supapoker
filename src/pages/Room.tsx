@@ -3,7 +3,7 @@ import { useNavigate } from '@solidjs/router'
 
 import { getId } from '../utils/strings'
 import { useCoreStore } from '../context/core.context'
-import { useRoomStore } from '../context/room.context'
+import { useGameStore } from '../context/game.context'
 import { METRICS_OPTIONS } from '../constants/game'
 import { joinGame, startGame } from '../services/game.services'
 
@@ -15,7 +15,7 @@ import { Button } from '../components/Button'
 const Room: Component = () => {
   const navigate = useNavigate()
   const { addLoader, removeLoader, addAlert } = useCoreStore()
-  const { setRoomStore } = useRoomStore()
+  const { setGameStore } = useGameStore()
 
   const [roomName, setRoomName] = createSignal('')
   const [metric, setMetric] = createSignal('')
@@ -32,9 +32,9 @@ const Room: Component = () => {
       user: user(),
     })
       .then(({ room, user }) => {
-        setRoomStore('room', room)
-        setRoomStore('user', user)
-        setRoomStore('players', (prev) => [...prev, user])
+        setGameStore('room', room)
+        setGameStore('user', user)
+        setGameStore('players', (prev) => [...prev, user])
         addAlert({ id: actionId, type: 'success', message: 'Room created' })
         navigate(ROUTES.GAME)
       })
@@ -64,9 +64,9 @@ const Room: Component = () => {
       roomId: roomId(),
     })
       .then(({ room, user, players }) => {
-        setRoomStore('room', room)
-        setRoomStore('user', user)
-        setRoomStore('players', (prev) => [...prev, ...players])
+        setGameStore('room', room)
+        setGameStore('user', user)
+        setGameStore('players', (prev) => [...prev, ...players])
         addAlert({ id: actionId, type: 'success', message: 'Joined to room' })
         navigate(ROUTES.GAME)
       })
