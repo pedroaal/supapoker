@@ -9,7 +9,7 @@ interface IInputProps {
 }
 
 const Input: Component<IInputProps> = (props) => (
-  <label class="form-control w-full max-w-xs">
+  <label class="form-control w-full max-w-xs join-item">
     <Show when={props.label}>
       <div class="label">
         <span class="label-text">{props.label}</span>

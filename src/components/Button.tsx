@@ -11,7 +11,7 @@ interface IButtonProps {
 
 export const Button: Component<IButtonProps> = (props) => (
   <button
-    class="btn btn-primary flex justify-center items-center gap-2"
+    class="btn btn-primary flex justify-center items-center gap-2 join-item"
     onClick={() => {
       props.onClick()
     }}
