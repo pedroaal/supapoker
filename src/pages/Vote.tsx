@@ -8,47 +8,40 @@ import {
   createEffect,
 } from 'solid-js'
 import { Icon } from 'solid-heroicons'
+import { useNavigate } from '@solidjs/router'
 import { check, clipboard } from 'solid-heroicons/outline'
 
 import { METRICS } from '../constants/game'
+import { ROUTES } from '../constants/router'
 import { useRoomStore } from '../context/room.context'
 import { createVote, deleteVotes } from '../services/vote.services'
-import { subscribeToGame, subscribeToUsers } from '../services/game.services'
+import { subscribeToEvents } from '../services/game.services'
 
 import Input from '../components/Input'
 import { Button } from '../components/Button'
-import { useNavigate } from '@solidjs/router'
-import { ROUTES } from '../constants/router'
 
 const Vote: Component = () => {
   const navigate = useNavigate()
 
-  const { roomStore, setRoomStore } = useRoomStore()
+  const { roomStore } = useRoomStore()
   const owner = getOwner()
 
   createEffect(() => {
     if (roomStore.room?.id === '') {
       navigate(ROUTES.HOME)
-
-      runWithOwner(owner, () => {
-        subscribeToUsers()
-        subscribeToGame()
-      })
     }
   })
 
-  const options = createMemo(() => {
-    if (roomStore.room?.id === '') {
-      return []
-    }
-
-    return METRICS[roomStore.room?.metric] ?? []
+  runWithOwner(owner, () => {
+    subscribeToEvents()
   })
+
+  const options = createMemo(() => METRICS[roomStore.room?.metric] ?? [])
 
   const hasVoted = (userId: string): boolean =>
     roomStore.votes.some((vote) => vote.userId === userId)
 
-  const vote = async (value: string): Promise<void> => {
+  const vote = (value: string): void => {
     createVote({
       room_id: roomStore.room.id,
       user_id: roomStore.user.id,
@@ -59,8 +52,9 @@ const Vote: Component = () => {
   }
 
   const clearVotes = (): void => {
-    setRoomStore('votes', () => [])
-    deleteVotes(roomStore.room.id)
+    deleteVotes(roomStore.room.id).catch((error) => {
+      console.error('Error deleting votes', error)
+    })
   }
 
   const copyToClipboard = async (): Promise<void> => {
@@ -74,11 +68,16 @@ const Vote: Component = () => {
         <div class="text-center">
           <h3>{roomStore.room.name}</h3>
         </div>
-        <div class="flex gap-4 border p-4 card h-32">
+        <div class="flex gap-4 border p-4 h-32 rounded-lg">
           <For each={roomStore.votes}>
             {(vote) => (
-              <div class="card h-24 w-16 flex justify-center items-center border">
-                <span>{vote.vote}</span>
+              <div class="h-24 w-16 flex justify-center items-center border border-accent rounded-lg">
+                <Show
+                  when={roomStore.votes.length === roomStore.players.length}
+                  fallback={<div class="size-full rounded-lg bg-accent" />}
+                >
+                  <span class="text-accent">{vote.vote}</span>
+                </Show>
               </div>
             )}
           </For>
@@ -87,7 +86,7 @@ const Vote: Component = () => {
           <For each={options()}>
             {(option) => (
               <button
-                class="card size-10 flex justify-center items-center border"
+                class="size-10 btn btn-outline btn-secondary"
                 onClick={() => {
                   vote(option.value)
                 }}
@@ -117,7 +116,7 @@ const Vote: Component = () => {
           </For>
         </ul>
         <Show when={roomStore.user.owner}>
-          <div class="flex">
+          <div class="join">
             <Input
               value={() => roomStore.room.id}
               onChange={() => null}

@@ -4,6 +4,8 @@ import { createUser, findUsersByRoomId } from './user.services'
 import { createRoom, findRoomById } from './room.services'
 import { type IGame } from '../types/game'
 import { useRoomStore } from '../context/room.context'
+import { voteDto } from './vote.dto'
+import { userDto } from './user.dto'
 
 export const startGame = async (body: {
   name: string
@@ -35,7 +37,7 @@ export const joinGame = async (body: {
   return { room, user, players }
 }
 
-export const subscribeToUsers = () => {
+export const subscribeToEvents = () => {
   const { roomStore, setRoomStore } = useRoomStore()
 
   supabase
@@ -43,39 +45,39 @@ export const subscribeToUsers = () => {
     .on(
       'postgres_changes',
       {
-        event: '*',
+        event: 'INSERT',
         schema: 'public',
         table: 'users',
         filter: `room_id=eq.${roomStore.room?.id}`,
       },
       (payload) => {
-        setRoomStore('players', (prev) => [
-          ...prev,
-          { id: payload.new.id, name: payload.new.name, owner: false },
-        ])
+        setRoomStore('players', (prev) => [...prev, userDto(payload.new)])
       },
     )
-    .subscribe()
-}
-
-export const subscribeToGame = () => {
-  const { roomStore, setRoomStore } = useRoomStore()
-
-  supabase
-    .channel('custom-filter-channel')
     .on(
       'postgres_changes',
       {
-        event: '*',
+        event: 'INSERT',
         schema: 'public',
         table: 'votes',
         filter: `room_id=eq.${roomStore.room?.id}`,
       },
       (payload) => {
-        setRoomStore('votes', (prev) => [
-          ...prev,
-          { userId: payload.new.user_id, vote: payload.new.vote },
-        ])
+        setRoomStore('votes', (prev) => [...prev, voteDto(payload.new)])
+      },
+    )
+    .on(
+      'postgres_changes',
+      {
+        event: 'DELETE',
+        schema: 'public',
+        table: 'votes',
+        filter: `room_id=eq.${roomStore.room?.id}`,
+      },
+      (payload) => {
+        setRoomStore('votes', (prev) =>
+          prev.filter((vote) => vote.id !== payload.old.id),
+        )
       },
     )
     .subscribe()
