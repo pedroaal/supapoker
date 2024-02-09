@@ -10,7 +10,7 @@ import { joinGame, startGame } from '../services/game.services'
 import Input from '../components/Input'
 import Select from '../components/Select'
 import { ROUTES } from '../constants/router'
-import { Button } from '../components/Button'
+import Button from '../components/Button'
 
 const Room: Component = () => {
   const navigate = useNavigate()

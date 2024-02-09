@@ -18,7 +18,7 @@ import { createVote, deleteVotes } from '../services/vote.services'
 import { subscribeToEvents } from '../services/game.services'
 
 import Input from '../components/Input'
-import { Button } from '../components/Button'
+import Button from '../components/Button'
 
 const Vote: Component = () => {
   const navigate = useNavigate()
@@ -37,6 +37,18 @@ const Vote: Component = () => {
   })
 
   const options = createMemo(() => METRICS[gameStore.room?.metric] ?? [])
+
+  const average = createMemo(() => {
+    if (gameStore.votes.length === 0) {
+      return 0
+    }
+
+    const sum = gameStore.votes.reduce(
+      (acc, vote) => acc + Number(vote.vote),
+      0,
+    )
+    return Math.ceil(sum / gameStore.votes.length)
+  })
 
   const hasVoted = (userId: string): boolean =>
     gameStore.votes.some((vote) => vote.userId === userId)
@@ -64,10 +76,7 @@ const Vote: Component = () => {
 
   return (
     <div class="flex gap-4">
-      <div class="w-full md:w-2/3 flex flex-col gap-4">
-        <div class="text-center">
-          <h3>{gameStore.room.name}</h3>
-        </div>
+      <div class="w-full sm:w-2/3 flex flex-col gap-4">
         <div class="flex gap-4 border p-4 h-32 rounded-lg">
           <For each={gameStore.votes}>
             {(vote) => (
@@ -82,11 +91,11 @@ const Vote: Component = () => {
             )}
           </For>
         </div>
-        <div class="flex gap-4">
+        <div class="flex gap-4 border p-4 rounded-lg overflow-y-auto">
           <For each={options()}>
             {(option) => (
               <button
-                class="size-10 btn btn-outline btn-secondary"
+                class="btn btn-outline btn-secondary btn-square"
                 onClick={() => {
                   vote(option.value)
                 }}
@@ -97,24 +106,15 @@ const Vote: Component = () => {
             )}
           </For>
         </div>
+        <Show when={gameStore.user.owner}>
+          <div class="flex gap-4 justify-between items-center border p-4 rounded-lg">
+            <span>Average: {average()}</span>
+            <Button title="Play again" onClick={clearVotes} />
+          </div>
+        </Show>
       </div>
       <div class="w-full md:w-1/3 flex flex-col gap-4">
-        Players
-        <ul>
-          <For each={gameStore.players}>
-            {(player) => (
-              <li class="flex gap-2">
-                {hasVoted(player.id) && (
-                  <>
-                    <Icon class="w-5 h-5 text-success" path={check} />
-                  </>
-                )}
-                <span>{player.name}</span>
-                {Boolean(player.owner) && <span>(moderator)</span>}
-              </li>
-            )}
-          </For>
-        </ul>
+        <h3>{gameStore.room.name}</h3>
         <Show when={gameStore.user.owner}>
           <div class="join">
             <Input
@@ -122,10 +122,27 @@ const Vote: Component = () => {
               onChange={() => null}
               disabled
             />
-            <Button title="" onClick={copyToClipboard} icon={clipboard} />
+            <Button onClick={copyToClipboard} icon={clipboard} />
           </div>
-          <Button title="Clear votes" onClick={clearVotes} />
         </Show>
+        <div class="flex flex-col gap-2">
+          <h5>Players</h5>
+          <ul>
+            <For each={gameStore.players}>
+              {(player) => (
+                <li class="flex gap-2">
+                  {hasVoted(player.id) && (
+                    <>
+                      <Icon class="w-5 h-5 text-success" path={check} />
+                    </>
+                  )}
+                  <span>{player.name}</span>
+                  {Boolean(player.owner) && <span>(moderator)</span>}
+                </li>
+              )}
+            </For>
+          </ul>
+        </div>
       </div>
     </div>
   )
