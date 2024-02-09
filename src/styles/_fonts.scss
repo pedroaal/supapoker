@@ -1,0 +1,27 @@
+h1 {
+  @apply font-sans text-4xl font-bold text-base-content;
+}
+
+h2 {
+  @apply font-sans text-3xl font-bold text-base-content;
+}
+
+h3 {
+  @apply font-sans text-2xl font-bold text-base-content;
+}
+
+h4 {
+  @apply font-sans text-xl font-bold text-base-content;
+}
+
+h5 {
+  @apply font-sans text-lg font-bold text-base-content;
+}
+
+h6 {
+  @apply font-sans text-base font-bold text-base-content;
+}
+
+p {
+  @apply font-sans text-base font-normal text-base-content;
+}
