@@ -4,7 +4,7 @@ import 'solid-devtools'
 
 import App from './App'
 
-import './styles/index.css'
+import './styles/index.scss'
 
 const root = document.getElementById('root')
 
