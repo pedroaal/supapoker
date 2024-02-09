@@ -10,19 +10,17 @@ import Loader from './components/Loader'
 
 import Room from './pages/Room'
 import Vote from './pages/Vote'
+import BaseLayout from './layouts/Base'
 
 const App: Component = () => (
   <CoreProvider>
     <GameProvider>
-      <div class="container mx-auto">
-        <header class="text-center">SUPAPOKER</header>
-        <Alerts />
-        <Loader />
-        <Router>
-          <Route path={ROUTES.HOME} component={Room} />
-          <Route path={ROUTES.GAME} component={Vote} />
-        </Router>
-      </div>
+      <Alerts />
+      <Loader />
+      <Router root={BaseLayout}>
+        <Route path={ROUTES.HOME} component={Room} />
+        <Route path={ROUTES.GAME} component={Vote} />
+      </Router>
     </GameProvider>
   </CoreProvider>
 )
