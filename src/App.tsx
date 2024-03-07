@@ -2,26 +2,21 @@ import { type Component } from 'solid-js'
 import { Route, Router } from '@solidjs/router'
 
 import { ROUTES } from './constants/router'
-import { GameProvider } from './context/game.context'
 import { CoreProvider } from './context/core.context'
 
 import Alerts from './components/Alerts'
 import Loader from './components/Loader'
 
-import Room from './pages/Room'
-import Vote from './pages/Vote'
-import BaseLayout from './layouts/Base'
+import Home from './pages/Home'
+import MainLayout from './layouts/Main'
 
 const App: Component = () => (
   <CoreProvider>
-    <GameProvider>
-      <Alerts />
-      <Loader />
-      <Router root={BaseLayout}>
-        <Route path={ROUTES.HOME} component={Room} />
-        <Route path={ROUTES.GAME} component={Vote} />
-      </Router>
-    </GameProvider>
+    <Alerts />
+    <Loader />
+    <Router root={MainLayout}>
+      <Route path={ROUTES.HOME} component={Home} />
+    </Router>
   </CoreProvider>
 )
 
